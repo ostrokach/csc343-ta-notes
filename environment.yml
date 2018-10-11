@@ -1,0 +1,14 @@
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.6.6=h5001a0f_0
+  - numpy
+  - scipy
+  - pandas
+  - sqlalchemy
+  - psycopg2
+  - matplotlib
+  - jupyter
+  - conda-forge::jupyter_contrib_nbextensions
+  - conda-forge::postgresql=9.6.*

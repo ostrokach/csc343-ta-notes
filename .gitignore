@@ -1,0 +1,7 @@
+.ipynb_checkpoints
+*.nfs*
+
+# Postgres
+pgdata/
+postgres.log
+
