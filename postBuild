@@ -1,5 +1,6 @@
 # Start PostgreSQL
 initdb -D pgdata -U postgres
+sleep 2
 pg_ctl -D pgdata -l postgres.log start
 
 jupyter contrib nbextension install --user
