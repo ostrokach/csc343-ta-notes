@@ -9,5 +9,5 @@ jupyter nbextension enable exercise2/main
 jupyter nbextension enable toc2/main
 
 # Notebooks w/ extensions that auto-run code must be "trusted" to work the first time
-jupyter trust *.ipynb
+jupyter trust notebooks/*.ipynb
 
