@@ -1,8 +1,4 @@
-# Start PostgreSQL
-initdb -D pgdata -U postgres
-sleep 2
-pg_ctl -D pgdata -l postgres.log start
-
+# Enable Jupyter extensions
 jupyter contrib nbextension install --user
 jupyter nbextension enable --py widgetsnbextension
 jupyter nbextension enable codefolding/main
