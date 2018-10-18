@@ -8,3 +8,14 @@ postgres.log
 # Solutions
 *-solutions.pdf
 *_solutions.pdf
+
+# Binder
+.bash_logout
+.bashrc
+.conda/
+.gitconfig
+.ipython/
+.jupyter/
+.local/
+.profile
+.wget-hsts
