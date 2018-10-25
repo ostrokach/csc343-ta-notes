@@ -1,0 +1,10 @@
+.ipynb_checkpoints
+*.nfs*
+
+# Postgres
+pgdata/
+postgres.log
+
+# Solutions
+*-solutions.pdf
+*_solutions.pdf
