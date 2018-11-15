@@ -1,0 +1,168 @@
+\documentclass[11pt]{article}
+%\usepackage[margin=0.5in]{geometry}
+%\usepackage[hmargin=0.25in, vmargin=0.75in]{geometry}
+\usepackage[hmargin=0.5in, vmargin=0.5in]{geometry}
+
+\newcommand{\urule}[2][.5pt]{\rule[-2pt]{#2}{#1}} % "underline" rule
+\newif\ifsolutions % starts out false by default
+%\solutionstrue % comment out to format solutions
+\newif\ifresults % starts out false by default
+%\resultstrue % comment out to format solutions
+
+\pagestyle{empty}
+
+\begin{document}
+
+%~~~ \vspace{-2cm}
+
+\noindent
+University of Toronto\\
+{\sc CSC}343,
+Fall 2018\\[10pt]
+{\huge \bf JDBC Exercise}\\[10pt]
+
+% --------- Important not to self!!! ----------
+% In the jelly-beans.sql code that students get, don't set the search_path.
+% Otherwise, the JDBC code will not find the table, because it doesn't set the search path.
+
+
+\noindent
+Follow these steps to connect a Java program to your postgreSQL database and run some
+queries from Java.
+\textbf{See the other side for the most common errors students make.}
+
+\begin{enumerate}
+\item  %----------
+Log on to \verb+dbsrv1.cdf.utoronto.ca+
+\item  %----------
+Create a directory where you'd like to do this work and \verb+cd+ to it.
+\item  %----------
+Get a copy of a file, which defines a small dataset (\verb+jelly-beans.sql+)
+and some java code (\verb+Example.java+) that you will use today:
+
+\begin{verbatim}
+    cp ~csc343h/fall/public_html/in_class/w6/code/* .
+\end{verbatim}
+(You really do need that period at the end.)
+\item  %----------
+Start postgreSQL: 
+\begin{verbatim}
+    psql csc343h-<your username>
+\end{verbatim}
+\item  %----------
+Import jelly-beans.sql into your database:
+\begin{verbatim}
+    \i jelly-beans.sql
+\end{verbatim}
+\item  %----------
+Use \verb+\d+ to see what is defined and a \verb+SELECT+ query to examine the contents of 
+table \verb+guesses+.
+Then use \verb+\q+ to exit psql.
+\item  %----------
+Get your bearings in the code.  Find the parts where it:
+\begin{enumerate}
+\item
+Establishes a connection to the database.
+\item
+Runs a query to find all the guesses by kids under 10, and iterates through the results to print them.
+\item
+Builds a query to find all the guesses by a particular person, but with a {\it placeholder} for
+the person's name.  The program then substitutes in a name entered by the user and goes on to
+run the query and print the results.
+\end{enumerate}
+\item  %----------
+Edit \verb+Example.java+ to replace \verb+dianeh+ with your cdf userid on these two lines: 
+\begin{verbatim}
+    url = "jdbc:postgresql://localhost:5432/csc343h-dianeh";
+    conn = DriverManager.getConnection(url, "dianeh", "");
+\end{verbatim}
+\item  %----------
+Compile the Java code:
+\begin{verbatim}
+    javac Example.java
+\end{verbatim}
+\item  %----------
+Run the compiled code:
+\begin{verbatim}
+    java -cp /local/packages/jdbc-postgresql/postgresql-9.4.1212.jar: Example
+\end{verbatim}
+The path to the \verb+jar+ file is hard to type.
+Tip: Use filename completion!
+(And you really do need that colon.)
+\end{enumerate}
+
+
+
+\section*{Additional Exercises}
+
+\begin{enumerate}
+\setcounter{enumii}{10}
+\item  
+Prompt the user for an age,
+read the age,
+and then print the average guess
+among those from people who are at least that age.
+\item
+Create an array of exactly the right size to hold every name in the table of guesses
+(without storing duplicates),
+and then put those name into the array.
+\end{enumerate}
+% \item  %----------
+% The provided example runs a query on the database, but it doesn't change anything. In this step, go back to accessing the database
+% again through postgreSQL as you did in step 4. You can skip step 5 this time because you don't need to import the table again. Use 
+% a \verb+SELECT+ statement to see that the database has not changed. Now use an \verb+INSERT+ statement to add a new guesser to the table as number 12.
+%
+%
+%\item %-----------
+%Use a \verb+DELETE+ statement to remove the new guesser that you just added.
+%
+%\item %-------------
+%{\bf Helpful Hint:} Before you start this next step, open a second window on cdf. Leave the postgreSQL prompt open in the first window, since 
+%we will be coming back to examine the database after doing the next step.
+%  
+%Add to \verb+Example.java+ so that it inserts guesser number 12. You don't need to ask the
+%user for the name or the number of guesses, just hardcode these values into your code. Compile and run your updated Java code. See
+%below for common errors. The last error, where you already have a tuple with number 12,  might surprise some of you. If you
+%correctly used \verb+DELETE+ to remove this tuple, why is it still there? This will happen if you run your program twice and may even happen if your
+%program failed on an earlier run. Depending on \emph{when} the failure happened, the tuple may have already been inserted. Repeat step 
+%12 to delete the tuple again and then rerun your program.
+%
+%\item %--------------
+%Once you have successfully run your Example code, use a \verb+SELECT+ statement from the postgreSQL prompt to confirm that the new 
+%guesser was added. If you didn't already experience the error discussed above, rerun your program and see it now. Play around with
+%editing and viewing the database from the postgreSQL prompt in between runs of your program. 
+
+\vfill
+\section*{Common errors}
+\begin{itemize}
+\item If you forget the colon:
+\begin{verbatim}
+wolf% java -cp /local/packages/jdbc-postgresql/postgresql-9.4.1212.jar Example
+Error: Could not find or load main class Example
+\end{verbatim}
+\item If you try to run the code on any machine other than dbsrv1:
+\begin{verbatim}
+wolf% java -cp /local/packages/jdbc-postgresql/postgresql-9.4.1212.jar: Example
+SQL Exception.<Message>: Connection refused. Check that the hostname and port are correct 
+and that the postmaster is accepting TCP/IP connections.
+\end{verbatim}
+\item If you try to use an \verb|executeQuery| statement to do an insert. You want to use \verb|executeUpdate| instead. 
+\begin{verbatim}
+SQL Exception.<Message>: No results were returned by the query.
+\end{verbatim}
+% This is an error that you could see inside psql so doesn't belong with this list of JDBC-specific errors.
+%\item If you try to use your Example.java program to insert a tuple for guesser number 12 when there is already one in the table:
+%\begin{verbatim}
+%SQL Exception.<Message>: ERROR: duplicate key value violates unique constraint 
+%          "guesses_pkey"
+%  Detail: Key (number)=(12) already exists.
+%\end{verbatim}
+\end{itemize}
+
+\end{document}
+
+
+
+
+
+

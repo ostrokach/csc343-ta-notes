@@ -1,0 +1,3 @@
+[submodule "notebooks/tutorial_8/csc343-jdbc-practice"]
+	path = notebooks/tutorial_8/csc343-jdbc-practice
+	url = git@github.com:ostrokach/csc343-jdbc-practice.git

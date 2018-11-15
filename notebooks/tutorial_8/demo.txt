@@ -1,0 +1,90 @@
+In case it's helpful, here is a demo of doing the steps on
+the JDBC exercise handout.
+
+-- 1) Log in to dbsrv1
+
+Diane-Hortons-MacBook-3:~ dianeh$ ssh dbsrv1.cdf.utoronto.ca
+dianeh@dbsrv1.cdf.utoronto.ca's password: 
+                    *  Department of Computer Science *
+                    *  Computing Disciplines Facility *
+
+    Type "faq" to view CDF's FAQ, and "rules" to view CDF's usage policy.
+     Report system problems by sending email to <admin@cdf.toronto.edu>.
+
+The CDF labs are: BA2200 BA2210 BA2220 BA2240 BA3175 BA3185 BA3195 BA3200 
+Student/TA Term accounts: Suspended Jan 12th for those not in winter courses
+--------------------------------------------------------------------------------
+
+
+            Computer Science Community bulletin boards:
+                https://csc.cdf.toronto.edu
+
+
+
+Last login: Mon Feb  9 13:15:37 2015 from red-gw70.cs.toronto.edu
+
+-- 2) Create a directory to work in and go there.
+
+dbsrv1% mkdir jdbc-practise
+jdbc-practise/ jude.MOV*      junk/          justin 
+dbsrv1% cd jdbc-practise/
+
+-- 3) Copy the required files.
+
+dbsrv1% cp ~csc343h/winter/public_html/in_class/w6/code/* .
+dbsrv1% ls
+Example.java  jelly-beans.sql
+
+-- 4) Start postgreSQL.
+
+dbsrv1% psql csc343h-dianeh
+psql (9.1.14)
+Type "help" for help.
+
+-- 5) Import jelly-beans.sql.
+
+csc343h-dianeh=> \i jelly-beans.sql  
+psql:jelly-beans.sql:5: NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "guesses_pkey" for table "guesses"
+CREATE TABLE
+INSERT 0 11
+
+-- 6) Look around.
+
+csc343h-dianeh=> \d
+csc343h-dianeh=> select * from guesses;
+csc343h-dianeh=> select * from guesses where age > 10;
+ number |   name    | guess | age 
+--------+-----------+-------+-----
+      3 | Sam       |   502 |  12
+      4 | Madeleine |   511 |  18
+      6 | Michael   |  1000 |  12
+(3 rows)
+
+csc343h-dianeh=> \q
+
+-- 7 & 8) Get your bearings in the code. I used vim, but you may favour some
+-- other editor.  Then put your cdf username in the two spots in place 
+-- of mine.
+
+dbsrv1% vim Example.java 
+
+-- 9) Compile.
+
+dbsrv1% javac Example.java
+
+-- 10) And run -- Ta-da!  You have connected Java to SQL.
+
+dbsrv1% java -cp /local/packages/jdbc-postgresql/postgresql-9.4.1212.jar: Example
+Cole guessed 365
+Avery guessed 585
+Cole guessed 450
+Mackenzie guessed 700
+Mackenzie guessed 701
+Micah guessed 498
+Jiaqi guessed 509
+Jamieson guessed 502
+Look up who? 
+Mackenzie
+   Mackenzie guessed 700
+   Mackenzie guessed 701
+dbsrv1% 
